@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/png" sizes="32x32" href="upc_logo_32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="upc_logo_16x16.png">
+    <title>Predicción del clima en Pisac (Cusco)</title>
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" 
+    rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" 
+    crossorigin="anonymous">
+
+    <style>
+      #resultado {
+        font-weight:  bold;
+        font-size:  1.2rem;
+        text-align: center;
+      }
+    </style>
+
+  </head>
+  <body>
+    
+    <main>
+      <div class="px-4 py-2 my-2 text-center border-bottom">
+        <img class="d-block mx-auto mb-2" src="upc_logo.png" alt="" width="80" height="80">
+        <h1 class="display-5 fw-bold">Predicción del clima según fecha</h1>
+        <h2 class="display-5 fw-bold">Modelo de Red Neuronal en Python</h2>
+        <div class="col-lg-6 mx-auto">
+          <p class="lead mb-0">Predicción de datos meteorológicos de Pisac (Cusco) usando Tensorflow.js</p>
+        </div>
+      </div>
+
+      <div class="b-example-divider"></div>
+
+      <div class="container mt-5">
+        <div class="row">
+          <div class="col-12 col-md-10 offset-md-3">
+            <form>
+              <div class="mb-3">
+                <label for="days">Elige un dia:</label>
+                  <select id="days" name="days">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                    <option value="21">21</option>
+                    <option value="22">22</option>
+                    <option value="23">23</option>
+                    <option value="24">24</option>
+                    <option value="25">25</option>
+                    <option value="26">26</option>
+                    <option value="27">27</option>
+                    <option value="28">28</option>
+                    <option value="29">29</option>
+                    <option value="30">30</option>
+                    <option value="31">31</option>
+                  </select>
+                  <label for="month">Elige un mes:</label>
+                  <select id="month" name="month">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                  </select>
+                  <label for="year">Ingresa un año:</label>
+                  <input type="text" id="year" name="year" required minlength="1" maxlength="4" size="10">
+                  <button type = 'button' onclick="prediction()">Predecir</button>
+              </div>
+              <div class="mb-3">
+                <label for="celsius" class="form-label">Resultado</label>
+                <div id="precipitacion">
+                  ---
+                </div>
+                <div id="max">
+                  ---
+                </div>
+                <div id="min">
+                  ---
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@2.0.0/dist/tf.min.js"></script>
+
+
+
+    <script type="text/javascript">
+
+      var modelo = null;
+
+      //Cargar modelo
+      (async () => {
+          console.log("Cargando modelo...");
+          //const modelo = await tf.loadLayersModel("model.json");
+          modelo = await tf.loadLayersModel('model.json');
+          console.log(modelo)
+          console.log("Modelo cargado...");
+      })();
+
+      // Funcion donde se realiza la prediccion
+      function prediction() {
+        var dia = document.getElementById("days").value;
+        var mes = document.getElementById("month").value;
+        var anho = document.getElementById("year").value;
+        console.log(dia, mes, anho)
+        //var tensor = tf.tensor2d([[parseInt(anho)],[parseInt(mes)],[parseInt(dia)]]);
+        //console.log(tensor)
+        //console.log(modelo)
+        //var prediccion = modelo.predict(tensor).dataSync();
+        //console.log(prediccion)
+        //document.getElementById("lbl-celsius").innerHTML=celsius;
+        if (modelo != null) {
+          var tensor1 = tf.tensor1d([parseInt(anho)]);
+          var tensor2 = tf.tensor1d([parseInt(mes)]);
+          var tensor3 = tf.tensor1d([parseInt(dia)]);
+          var prediccion = modelo.predict([tensor1,tensor2,tensor3]);
+          p1 = prediccion[0].dataSync();
+          p2 = prediccion[1].dataSync();
+          p3 = prediccion[2].dataSync();
+          //prediccion = Math.round(prediccion, 1);
+          document.getElementById("precipitacion").innerHTML = "Potencial Precipitacion: " + roundToTwo(p1[0]);
+          document.getElementById("max").innerHTML = "Temperatura Máxima: " + roundToTwo(p2[0]);
+          document.getElementById("min").innerHTML = "Temperatura Mínima: " + roundToTwo(p3[0]);
+        } else {
+          document.getElementById("precipitacion").innerHTML = "Intenta de nuevo en un momento...";
+          document.getElementById("max").innerHTML = "Intenta de nuevo en un momento...";
+          document.getElementById("min").innerHTML = "Intenta de nuevo en un momento...";
+        }
+      }
+
+      function roundToTwo(num) {    
+          return +(Math.round(num + "e+2")  + "e-2");
+      }
+    </script>
+  </body>
+</html>

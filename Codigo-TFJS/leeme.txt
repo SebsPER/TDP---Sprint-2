@@ -1,0 +1,7 @@
+Interfaz funciona como el ejemplo visto en clase
+
+correr: python -m http.server 8000
+en el directorio en el que se trabaje con los archivos
+
+Tras hacer eso abrir en el navegador:
+http://localhost:8000/index_model.html
